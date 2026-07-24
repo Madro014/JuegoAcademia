@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recorrido de la Academia - Época de Platón</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <audio id="bg-music" loop>
+    <!-- Música de ambiente local -->
+    <source src="music/musica.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <div id="app">
+    
+    <!-- Character representation (Visible across scenes) -->
+    <div id="character-container" class="hidden">
+      <img id="character-img" src="" alt="Personaje">
+    </div>
+
+    <!-- Dialog Box -->
+    <div id="dialog-overlay" class="hidden">
+      <div class="dialog-box">
+        <p id="dialog-text"></p>
+        <button id="next-action-btn">Continuar</button>
+      </div>
+    </div>
+
+    <!-- Scene Start (Splash Screen to trigger audio) -->
+    <section id="scene-start" class="scene active">
+      <div class="glass-panel">
+        <h1>Cosmos del Saber</h1>
+        <p>Prepárate para iniciar el recorrido.</p>
+        <button class="btn-primary" style="margin-top: 2rem;" onclick="startApp()">Ingresar a la Academia</button>
+      </div>
+    </section>
+
+    <!-- Scene 0: Character Selection -->
+    <section id="scene-0" class="scene hidden">
+      <div class="glass-panel">
+        <h1>La Academia</h1>
+        <p>Elige tu guía para comenzar este viaje al conocimiento.</p>
+        <div class="selection-cards">
+          <div class="card" onclick="selectCharacter('male')">
+            <img class="avatar-preview" src="skyns/male_neutral.svg" alt="Filósofo">
+            <h3>Filósofo</h3>
+          </div>
+          <div class="card" onclick="selectCharacter('female')">
+            <img class="avatar-preview" src="skyns/female_neutral.svg" alt="Filósofa">
+            <h3>Filósofa</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scene 1: Logo Zoom -->
+    <section id="scene-1" class="scene hidden">
+      <div class="logo-container">
+        <img src="logo.png" id="logo-img" alt="Logo de la Academia">
+      </div>
+    </section>
+
+    <!-- Scene 2: Poster -->
+    <section id="scene-2" class="scene hidden">
+      <div class="poster-container">
+        <img src="poster.png" alt="Póster de la academia" class="poster-img">
+      </div>
+    </section>
+
+    <!-- Scene 3: Classrooms (Mandatory Tour) -->
+    <section id="scene-3" class="scene hidden">
+      <div class="classrooms-header">
+        <h2>Los Salones del Saber</h2>
+        <p>Debes visitar todos los salones para continuar el recorrido.</p>
+      </div>
+      <div class="grid-salones">
+        <div class="salon-card" id="salon-1" onclick="visitSalon(1, 'salon1.png')">
+          <div class="salon-number">I</div>
+          <div class="status-indicator"></div>
+        </div>
+        <div class="salon-card" id="salon-2" onclick="visitSalon(2, 'salon2.png')">
+          <div class="salon-number">II</div>
+          <div class="status-indicator"></div>
+        </div>
+        <div class="salon-card empty" id="salon-3" onclick="visitSalon(3, null)">
+          <div class="salon-number">III</div>
+          <div class="status-indicator"></div>
+        </div>
+        <div class="salon-card empty" id="salon-4" onclick="visitSalon(4, null)">
+          <div class="salon-number">IV</div>
+          <div class="status-indicator"></div>
+        </div>
+        <div class="salon-card empty" id="salon-5" onclick="visitSalon(5, null)">
+          <div class="salon-number">V</div>
+          <div class="status-indicator"></div>
+        </div>
+        <div class="salon-card empty" id="salon-6" onclick="visitSalon(6, null)">
+          <div class="salon-number">VI</div>
+          <div class="status-indicator"></div>
+        </div>
+      </div>
+      <button id="btn-finish-salons" class="btn-primary" onclick="finishSalons()">Continuar recorrido</button>
+    </section>
+
+    <!-- Scene 4: Final -->
+    <section id="scene-4" class="scene hidden">
+      <div class="final-container">
+        <img src="final.png" id="final-img" alt="Final del recorrido">
+      </div>
+    </section>
+
+    <!-- Modal for Classrooms -->
+    <div id="salon-modal" class="hidden">
+      <div class="modal-content glass-panel modal-anim">
+        <span class="close-btn" onclick="closeSalonModal()">&times;</span>
+        <h2 id="modal-title">Salón</h2>
+        <div id="modal-image-container"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

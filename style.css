@@ -1,0 +1,572 @@
+:root {
+  --primary-color: #d4af37; /* Gold for Plato era */
+  --secondary-color: #f3e5ab; /* Parchment */
+  --bg-dark: #1a1a1a;
+  --text-light: #f8fafc;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(212, 175, 55, 0.3); /* Gold tint */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-dark);
+  background-image: radial-gradient(circle at center, #2a2a2a 0%, #0a0a0a 100%);
+  color: var(--text-light);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Outfit', sans-serif;
+}
+
+h1, h2, h3, .salon-number {
+  font-family: 'Cinzel', serif;
+  color: var(--primary-color);
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1s ease-in-out;
+  opacity: 1;
+  z-index: 1;
+}
+
+.scene.hidden {
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glassmorphism */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  padding: 3rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+.glass-panel h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.selection-cards {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.card {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--glass-border);
+  padding: 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 200px;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  background: rgba(212, 175, 55, 0.1);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1rem auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+  border-radius: 50%;
+}
+
+/* Character representation */
+#character-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 200px;
+  height: 200px;
+  z-index: 100;
+  transition: all 1s ease-in-out;
+  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+}
+
+#character-container.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#character-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Dialog Box */
+#dialog-overlay {
+  position: fixed;
+  bottom: 30px;
+  left: 260px; /* Increased offset to not block character */
+  right: 50px;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.5s;
+}
+
+#dialog-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#dialog-overlay:not(.hidden) .dialog-box {
+  animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dialog-box {
+  background: rgba(10, 10, 10, 0.85);
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+  opacity: 0;
+}
+
+.dialog-box p {
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.dialog-box button, .btn-primary {
+  background: var(--primary-color);
+  color: #000;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.dialog-box button:hover, .btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--primary-color);
+  background: #f1c40f;
+}
+
+/* Scene 1: Logo Zoom */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+#logo-img {
+  max-width: 400px;
+  transition: transform 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#logo-img.zoom-in {
+  transform: scale(2.2);
+}
+
+/* Scene 2: Poster */
+.poster-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.poster-img {
+  max-height: 85vh;
+  border-radius: 8px;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
+  animation: scaleIn 0.8s ease-out;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Scene 3: Classrooms */
+.classrooms-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.classrooms-header h2 {
+  font-size: 2.8rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.grid-salones {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+
+.salon-card {
+  background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 70px 70px 0 0; /* Greek Arch */
+  width: 140px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 5px 15px rgba(212, 175, 55, 0.1);
+}
+
+/* Greek Pillars on the sides */
+.salon-card::before, .salon-card::after {
+  content: '';
+  position: absolute;
+  top: 70px;
+  bottom: -2px;
+  width: 12px;
+  background: repeating-linear-gradient(90deg, #d4af37, #d4af37 3px, #e5c158 3px, #e5c158 6px);
+  border: 1px solid #7a631c;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+  border-radius: 2px 2px 0 0;
+}
+
+.salon-card::before { left: -14px; }
+.salon-card::after { right: -14px; }
+
+.salon-card:hover {
+  transform: scale(1.08) translateY(-5px);
+  border-color: #f1c40f;
+  box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.2), 0 10px 30px rgba(212, 175, 55, 0.4);
+}
+
+.salon-card.visited {
+  border-color: #2ecc71;
+}
+
+.salon-card.visited::before, .salon-card.visited::after {
+  background: repeating-linear-gradient(90deg, #2ecc71, #2ecc71 3px, #4ade80 3px, #4ade80 6px);
+  border-color: #1e824c;
+}
+
+.salon-number {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 15px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #e74c3c;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px #e74c3c;
+}
+
+.salon-card.visited .status-indicator {
+  background-color: #2ecc71;
+  box-shadow: 0 0 15px #2ecc71;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+}
+
+#btn-finish-salons {
+  margin-top: 1rem;
+}
+
+/* Modal */
+#salon-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  backdrop-filter: blur(8px);
+  transition: opacity 0.4s ease;
+}
+
+#salon-modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-anim {
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#salon-modal:not(.hidden) .modal-anim {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.modal-content {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  color: var(--primary-color);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+#modal-image-container img {
+  max-width: 100%;
+  max-height: 60vh;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.placeholder-text {
+  font-size: 1.5rem;
+  color: #aaa;
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+/* Scene 4: Final */
+.final-container img {
+  max-width: 80%;
+  max-height: 85vh;
+  border-radius: 8px;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 50px rgba(212, 175, 55, 0.2);
+}
+
+/* ==================================
+   RESPONSIVE DESIGN (Tablets & Mobile)
+   ================================== */
+@media (max-width: 900px) {
+  .grid-salones {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  #character-container {
+    width: 150px;
+    height: 150px;
+  }
+  
+  #dialog-overlay {
+    left: 180px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Allow scenes to scroll if content is too tall on mobile */
+  .scene {
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding-top: 2rem;
+    padding-bottom: 7rem; /* Space for the bottom dialog */
+  }
+
+  .glass-panel {
+    padding: 1.5rem;
+    width: 90%;
+    margin: 0 auto;
+  }
+  
+  .glass-panel h1 {
+    font-size: 1.8rem;
+  }
+  .glass-panel p {
+    font-size: 1rem;
+  }
+
+  .selection-cards {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .card {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .avatar-preview {
+    width: 60px;
+    height: 60px;
+    margin: 0;
+  }
+
+  .card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  #logo-img {
+    max-width: 70%;
+    margin-top: 30%;
+  }
+  
+  .classrooms-header {
+    margin-top: 1rem;
+  }
+  .classrooms-header h2 {
+    font-size: 1.8rem;
+  }
+  .classrooms-header p {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+  }
+
+  .grid-salones {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .salon-card {
+    width: 100%;
+    max-width: 130px;
+    height: 150px;
+    border-radius: 50px 50px 0 0;
+    margin: 0 auto;
+  }
+  
+  .salon-card::before, .salon-card::after {
+    top: 50px;
+    width: 8px;
+  }
+  .salon-card::before { left: -10px; }
+  .salon-card::after { right: -10px; }
+
+  .salon-number {
+    font-size: 2.2rem;
+  }
+  
+  /* RPG Style Dialog on Mobile */
+  #character-container {
+    width: 80px;
+    height: 80px;
+    left: 5px;
+    bottom: 5px;
+  }
+  
+  #dialog-overlay {
+    left: 90px;
+    right: 5px;
+    bottom: 5px;
+  }
+  
+  .dialog-box {
+    padding: 0.8rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .dialog-box p {
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  .dialog-box button {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .modal-content {
+    width: 90%;
+    padding: 1.5rem 1rem;
+  }
+  
+  .poster-container, .final-container {
+    margin-top: 3rem;
+  }
+
+  .poster-img, .final-container img {
+    max-width: 90%;
+    max-height: 50vh;
+  }
+}

@@ -168,4 +168,28 @@ function finishSalons() {
   }
 }
 
-// (El oyente global de clics fue eliminado a favor de la pantalla de inicio 'startApp')
+// Reiniciar el juego
+function restartGame() {
+  // Resetear estado
+  visitedSalons = [false, false, false, false, false, false];
+  userCharType = '';
+  currentScene = 0;
+
+  // Resetear clases de salones visitados
+  for (let i = 1; i <= 6; i++) {
+    document.getElementById(`salon-${i}`).classList.remove('visited');
+  }
+
+  // Resetear zoom del logo
+  document.getElementById('logo-img').classList.remove('zoom-in');
+
+  // Ocultar personaje y diálogo
+  document.getElementById('character-container').classList.add('hidden');
+  hideDialog();
+
+  // Volver a la pantalla de inicio
+  document.getElementById('scene-4').classList.add('hidden');
+  document.getElementById('scene-4').classList.remove('active');
+  document.getElementById('scene-start').classList.remove('hidden');
+  document.getElementById('scene-start').classList.add('active');
+}

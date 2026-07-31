@@ -11,7 +11,7 @@ const dialogTexts = [
 
 function updateCharacterExpression(expr) {
   const imgEl = document.getElementById('character-img');
-  imgEl.src = `skyns/${userCharType}_${expr}.svg`;
+  imgEl.src = `img/personajes/${userCharType}_${expr}.svg`;
 }
 
 function startApp() {

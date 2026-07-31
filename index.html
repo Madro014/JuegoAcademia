@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recorrido de la Academia - Época de Platón</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -46,11 +46,11 @@
         <p>Elige tu guía para comenzar este viaje al conocimiento.</p>
         <div class="selection-cards">
           <div class="card" onclick="selectCharacter('male')">
-            <img class="avatar-preview" src="skyns/male_neutral.svg" alt="Filósofo">
+            <img class="avatar-preview" src="img/personajes/male_neutral.svg" alt="Filósofo">
             <h3>Filósofo</h3>
           </div>
           <div class="card" onclick="selectCharacter('female')">
-            <img class="avatar-preview" src="skyns/female_neutral.svg" alt="Filósofa">
+            <img class="avatar-preview" src="img/personajes/female_neutral.svg" alt="Filósofa">
             <h3>Filósofa</h3>
           </div>
         </div>
@@ -60,14 +60,14 @@
     <!-- Scene 1: Logo Zoom -->
     <section id="scene-1" class="scene hidden">
       <div class="logo-container">
-        <img src="logo.png" id="logo-img" alt="Logo de la Academia">
+        <img src="img/academia/logo.png" id="logo-img" alt="Logo de la Academia">
       </div>
     </section>
 
     <!-- Scene 2: Poster -->
     <section id="scene-2" class="scene hidden">
       <div class="poster-container">
-        <img src="poster.png" alt="Póster de la academia" class="poster-img">
+        <img src="img/academia/poster.png" alt="Póster de la academia" class="poster-img">
       </div>
     </section>
 
@@ -78,11 +78,11 @@
         <p>Debes visitar todos los salones para continuar el recorrido.</p>
       </div>
       <div class="grid-salones">
-        <div class="salon-card" id="salon-1" onclick="visitSalon(1, 'salon1.png')">
+        <div class="salon-card" id="salon-1" onclick="visitSalon(1, 'img/salones/salon1.png')">
           <div class="salon-number">I</div>
           <div class="status-indicator"></div>
         </div>
-        <div class="salon-card" id="salon-2" onclick="visitSalon(2, 'salon2.png')">
+        <div class="salon-card" id="salon-2" onclick="visitSalon(2, 'img/salones/salon2.png')">
           <div class="salon-number">II</div>
           <div class="status-indicator"></div>
         </div>
@@ -109,7 +109,7 @@
     <!-- Scene 4: Final -->
     <section id="scene-4" class="scene hidden">
       <div class="final-container">
-        <img src="final.png" id="final-img" alt="Final del recorrido">
+        <img src="img/academia/final.png" id="final-img" alt="Final del recorrido">
       </div>
     </section>
 
@@ -124,6 +124,6 @@
 
   </div>
 
-  <script src="script.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
